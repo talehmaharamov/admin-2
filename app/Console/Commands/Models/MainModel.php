@@ -15,7 +15,7 @@ class MainModel extends Command
     {
         $controllerName = $this->argument('model');
         $controllerPath = app_path('Models/' . $controllerName . '.php');
-        $stubPath = base_path('stubs/models/main.stub');
+        $stubPath = base_path('stubs/models/Main.stub');
         $content = File::get($stubPath);
         $content = str_replace('$name', Str::lower($controllerName), $content);
         $content = str_replace('$controller', $controllerName, $content);

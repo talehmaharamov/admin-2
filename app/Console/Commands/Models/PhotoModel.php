@@ -13,7 +13,7 @@ class PhotoModel extends Command
     {
         $controllerName = $this->argument('model');
         $controllerPath = app_path('Models/' . $controllerName . 'Photos.php');
-        $stubPath = base_path('stubs/models/photo.stub');
+        $stubPath = base_path('stubs/models/Photos.stub');
         $content = File::get($stubPath);
         $content = str_replace('$name', Str::lower($controllerName), $content);
         $content = str_replace('$controller', $controllerName, $content);

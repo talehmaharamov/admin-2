@@ -4,27 +4,47 @@ namespace App\Console\Commands\Models;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Str;
+use Illuminate\Support\Str;
 
 class TranslationModel extends Command
 {
-    protected $signature = 'translation-model {model}';
+    protected $signature = 'add:model {model} {--t : Generate translation model} {--p : Generate photos model}';
+    protected $description = 'Generate different types of models';
 
-    protected $description = '';
-
-    public function handle()
+    public function handle(): void
     {
-        $controllerName = $this->argument('model');
-        $controllerPath = app_path('Models/' . $controllerName . 'Translation.php');
-        $stubPath = base_path('stubs/models/translation.stub');
-        $content = File::get($stubPath);
-        $content = str_replace('$name', Str::lower($controllerName), $content);
-        $content = str_replace('$controller', $controllerName, $content);
+        $modelName = $this->argument('model');
+        $generateTranslationModel = $this->option('t');
+        $generatePhotosModel = $this->option('p');
+
+        $this->generateModel($modelName, 'Main');
+
+        if ($generateTranslationModel) {
+            $this->generateModel($modelName, 'Translation');
+        }
+
+        if ($generatePhotosModel) {
+            $this->generateModel($modelName, 'Photos');
+        }
+    }
+
+    protected function generateModel($modelName, $modelType): void
+    {
+        if ($modelType !== 'Main') {
+            $modelName .= $modelType;
+        }
+
+        $controllerPath = app_path("Models/{$modelName}.php");
+        $stubPath = base_path("app/Utils/stubs/models/{$modelType}.stub");
+
         if (File::exists($stubPath)) {
-            $stubContent = File::get($stubPath);
+            $content = File::get($stubPath);
+            $content = str_replace('$name', Str::lower($modelName), $content);
+            $content = str_replace('$controller', $modelName, $content);
+
             File::put($controllerPath, $content);
 
-            $this->info('Translation model content replaced with the custom stub.');
+            $this->info("{$modelType} model content replaced with the custom stub.");
         } else {
             $this->error('Custom stub file not found.');
         }
