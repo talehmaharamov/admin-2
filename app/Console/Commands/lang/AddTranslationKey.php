@@ -8,32 +8,35 @@ use Illuminate\Support\Facades\File;
 class AddTranslationKey extends Command
 {
     protected $signature = 'translation:add {key} {values*}';
-    public function handle()
+    protected $description = 'Add translations for a key in language files';
+
+    public function handle(): void
     {
         $key = $this->argument('key');
         $values = $this->argument('values');
 
         $langPath = resource_path('lang');
-        foreach (File::directories($langPath) as $langDir) {
+        $langDirs = File::directories($langPath);
+
+        foreach ($langDirs as $index => $langDir) {
             if (strpos($langDir, 'vendor') !== false) {
                 continue;
             }
+
             $langCode = basename($langDir);
             $langFile = $langDir . '/backend.php';
             $langData = require $langFile;
 
-            // Convert values array to a comma-separated string
-            $valuesString = implode(', ', $values);
-
-            if (!isset($langData[$key])) {
-                $langData[$key] = $valuesString;
-                File::put($langFile, '<?php return ' . var_export($langData, true) . ';');
-                $this->info("Added translation key [$key] with values [$valuesString] to language file [$langCode].");
-            } else {
-                $this->warn("Translation key [$key] already exists in language file [$langCode].");
+            foreach ($values as $valueIndex => $value) {
+                if ($index === $valueIndex) {
+                    $langData[$key] = $value;
+                    File::put($langFile, '<?php return ' . var_export($langData, true) . ';');
+                    $this->info("Added translation value [$value] to language file [$langCode] with key [$key].");
+                    break;
+                }
             }
         }
+
         $this->info('All language files updated.');
     }
-
 }

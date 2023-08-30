@@ -243,5 +243,4 @@
   'your-item-message' => 'Your item is awaiting review. Please save the item number to edit or delete the listing.',
   'your-item-number' => 'Your item number',
   'zuhur' => 'Zuhur Group',
-  'taleh' => 'Az, En, Ru',
 );
