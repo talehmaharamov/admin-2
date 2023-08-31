@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Http\Controllers\Frontend;
+
+use App\Http\Controllers\Controller;
+use App\Models\$controllerPhotos;
+use App\Models\$controllerTranslation;
+use Exception;
+use Illuminate\Http\Request;
+use App\Models\$controller;
+use Illuminate\Support\Facades\Redirect;
+
+class $controllerController extends Controller
+{
+    public function index(){
+     $$name = $controller::where('status', 1)->get();
+     if (empty($$name)) {
+       return abort(404);
+     }
+        return view('frontend.$name.index', get_defined_vars());
+    }
+    public function show($slug){
+        $name = $controller::where('slug', $slug)->where('status', 1)->first();
+        if (empty($name)) {
+            return abort(404);
+        }
+      return view('frontend.$name.index', get_defined_vars());
+    }
+}

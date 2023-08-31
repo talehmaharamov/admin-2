@@ -14,7 +14,7 @@ class FillApiControllerCommand extends Command
     {
         $controllerName = $this->argument('controller');
         $controllerPath = app_path('Http/Controllers/Api/' . $controllerName . 'Controller.php');
-        $stubPath = base_path('stubs/api.stub');
+        $stubPath = base_path('stubs/Api.stub');
         $content = File::get($stubPath);
         $content = str_replace('$name', Str::lower($controllerName), $content);
         $content = str_replace('$controller', $controllerName, $content);

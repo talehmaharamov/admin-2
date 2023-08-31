@@ -6,13 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\CRUDHelper;
 use App\Models\$controllerPhotos;
 use App\Models\$controllerTranslation;
+use App\Utils\Traits\CRUD;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\$controller;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
 
 class $controllerController extends Controller
 {
+    use CRUD;
     public function index()
     {
         check_permission('$name index');
@@ -45,7 +48,7 @@ class $controllerController extends Controller
             {
                 $$namePhoto = new $controllerPhotos();
                 $$namePhoto->photo = $photo;
-                $$name->photos()->save($namePhoto);
+                $$name->photos()->save($$namePhoto);
             };
             alert()->success(__('messages.success'));
             return redirect(route('backend.$name.index'));
@@ -95,15 +98,17 @@ class $controllerController extends Controller
         }
     }
 
-    public function status(string $id)
+    public function status($controller $$name)
     {
         check_permission('$name edit');
-        return CRUDHelper::status('\App\Models\$controller', $id);
+        $this->changeStatus($$name);
+        return Redirect::back();
     }
 
-    public function delete(string $id)
+    public function delete($controller $$name)
     {
         check_permission('$name delete');
-        return CRUDHelper::remove_item('\App\Models\$controller', $id);
+        $this->delete($$name);
+        return Redirect::back();
     }
 }

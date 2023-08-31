@@ -12,7 +12,7 @@ class $controllerController extends Controller
         if ($controller::where('status', 1)->exists()) {
             return response()->json(['$name' => $controller::where('status', 1)->with('photos')->get()], 200);
         } else {
-            return response()->json(['$name' => '$controller-is-empty'], 404);
+            return response()->json(['message' => '$controller-is-empty'], 404);
         }
     }
 
@@ -21,7 +21,7 @@ class $controllerController extends Controller
         if ($controller::where('status', 1)->where('id', $id)->exists()) {
             return response()->json(['$name' => $controller::where('status', 1)->where('id', $id)->with('photos')->first()], 200);
         } else {
-            return response()->json(['$name' => '$name-is-not-founded'], 404);
+            return response()->json(['message' => '$name-is-not-founded'], 404);
         }
     }
 }

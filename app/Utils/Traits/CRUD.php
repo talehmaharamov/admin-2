@@ -21,4 +21,14 @@ trait CRUD
         }
         $item->delete();
     }
+
+    public function changeStatus($item): void
+    {
+        $status = $item->status;
+        if ($status == 1) {
+            $item->update(['status' => 0]);
+        } else {
+            $item->update(['status' => 1]);
+        }
+    }
 }
